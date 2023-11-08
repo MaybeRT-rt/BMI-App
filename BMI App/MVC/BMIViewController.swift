@@ -14,12 +14,15 @@ class BMIViewController: UIViewController {
 //MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        bmiView.delegate = self
         setupUI()
     }
 
     func setupUI() {
         view.addSubview(bmiView.backgroundView)
         view.addSubview(bmiView.mainStackView)
+        bmiView.mainStackView.addSubview(bmiView.heightStackView)
+        bmiView.mainStackView.addSubview(bmiView.weightStackView)
         
         NSLayoutConstraint.activate([
         bmiView.backgroundView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -31,9 +34,21 @@ class BMIViewController: UIViewController {
         bmiView.mainStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
         bmiView.mainStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
         bmiView.mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-
+        
+        bmiView.heightStackView.heightAnchor.constraint(equalToConstant: 21),
+        bmiView.heightSlider.heightAnchor.constraint(equalToConstant: 61),
+        bmiView.weightStackView.heightAnchor.constraint(equalToConstant: 21),
+        bmiView.weightSlider.heightAnchor.constraint(equalToConstant: 61),
+        
+        bmiView.calcButton.heightAnchor.constraint(equalToConstant: 51)
         ])
     }
-
 }
 
+extension BMIViewController: BMIDelegate {
+    func calcTapped(_ sender: UIButton) {
+        print("tap")
+    }
+    
+    
+}

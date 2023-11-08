@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol BMIDelegate: AnyObject {
+    func calcTapped(_ sender: UIButton)
+}
+
 class BMIView: UIView {
+    
+    weak var delegate: BMIDelegate?
     
     lazy var backgroundView: UIImageView = {
         let element = UIImageView()
@@ -40,6 +46,17 @@ class BMIView: UIView {
         return element
     }()
     
+    lazy var calcButton: UIButton = {
+        let element = UIButton()
+        element.tintColor = .white
+        element.backgroundColor = UIColor(red: 0.45, green: 0.45, blue: 0.82, alpha: 1.0)
+        element.layer.cornerRadius = 10
+        element.titleLabel?.font = .systemFont(ofSize: 20)
+        element.addTarget(self, action: #selector(calcTapped), for: .touchUpInside)
+        element.translatesAutoresizingMaskIntoConstraints = false
+        return element
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         setupView()
@@ -51,12 +68,12 @@ class BMIView: UIView {
     
     func setupView() {
         
-        heightWeightStackView = UIStackView(axis: .horizontal, distribution: .fillProportionally, subview: [heightStackView, weightStackView])
+        heightWeightStackView = UIStackView(axis: .horizontal, distribution: .fillEqually, subview: [heightStackView, weightStackView])
         
-        heightStackView = UIStackView(axis: .horizontal, distribution: .fillProportionally, subview: [heightLabel, heightNumberLabel])
-        weightStackView = UIStackView(axis: .horizontal, distribution: .fillProportionally, subview: [weightLabel, weightNumberLabel])
+        heightStackView = UIStackView(axis: .horizontal, distribution: .fillEqually, subview: [heightLabel, heightNumberLabel])
+        weightStackView = UIStackView(axis: .horizontal, distribution: .fillEqually, subview: [weightLabel, weightNumberLabel])
         
-        mainStackView = UIStackView(axis: .vertical, distribution: .fill, subview: [titleLabel, heightStackView, heightSlider, weightStackView, weightSlider])
+        mainStackView = UIStackView(axis: .vertical, distribution: .fillProportionally, subview: [titleLabel, heightStackView, heightSlider, weightStackView, weightSlider, calcButton])
         
         addSubview(backgroundView)
         addSubview(mainStackView)
@@ -67,5 +84,10 @@ class BMIView: UIView {
         heightNumberLabel.text = "1.5 m"
         weightLabel.text = "Wieght"
         weightNumberLabel.text = "100 kg"
+        calcButton.setTitle("Calculate", for: .normal)
+    }
+    
+    @objc func calcTapped(_ sender: UIButton) {
+        delegate?.calcTapped(sender)
     }
 }

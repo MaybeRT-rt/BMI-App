@@ -12,7 +12,7 @@ extension UIStackView {
         self.init(arrangedSubviews: subview)
         self.axis = axis
         self.distribution = distribution
-        self.spacing = 15
+        self.spacing = 0
         self.translatesAutoresizingMaskIntoConstraints = false
     }
 }
