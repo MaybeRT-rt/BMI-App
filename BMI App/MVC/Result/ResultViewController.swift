@@ -11,15 +11,23 @@ class ResultViewController: UIViewController {
     
     let resultView = ResultView()
     
+    var bmiValue: String?
+    var advice: String?
+    var color: UIColor?
+    
     //MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBlue
+        view.backgroundColor = color
         resultView.delegate = self
         setupUI()
     }
     
     func setupUI() {
+        
+        resultView.resultLabel.text = bmiValue
+        resultView.descriptionLabel.text = advice
+        
         view.addSubview(resultView.backgroundView)
         view.addSubview(resultView.mainStackView)
         view.addSubview(resultView.recalcButton)

@@ -15,6 +15,10 @@ class ResultView: UIView {
     
     weak var delegate: ReCalculateDelegate?
     
+//    var bmiValue: String
+//    var advice: String
+//    var color: UIColor?
+    
     lazy var backgroundView: UIImageView = {
         let element = UIImageView()
         element.image = UIImage(named: "result_background")

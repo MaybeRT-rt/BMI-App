@@ -10,7 +10,7 @@ import UIKit
 class CalculateViewController: UIViewController {
     
     let bmiView = CalculateView()
-    let calcBrain = CalcBrain()
+    var calcBrain = CalcBrain()
     
 //MARK: - Life Cycle
     override func viewDidLoad() {
@@ -49,20 +49,30 @@ class CalculateViewController: UIViewController {
 extension CalculateViewController: CalculateDelegate {
     
     func calcTapped(_ sender: UIButton) {
+        
+        let height = bmiView.heightSlider.value
+        let weight = bmiView.weightSlider.value
+        
+        calcBrain.calculateBMI(height: height, weight: weight)
+        
         let resultVC = ResultViewController()
         
         resultVC.modalTransitionStyle = .flipHorizontal
         resultVC.modalPresentationStyle = .fullScreen
         
+        resultVC.bmiValue = calcBrain.getBMIValue()
+        resultVC.color = calcBrain.getColor()
+        resultVC.advice = calcBrain.getAdvice()
+        
         present(resultVC, animated: true)
     }
     
     func heightSliderChange(_ sender: UISlider) {
-        bmiView.heightNumberLabel.text = String(format: "%.2f", sender.value) + "m"
+        bmiView.heightNumberLabel.text = String(format: "%.2f", sender.value) + " m"
     }
     
     func weightSliderChange(_ sender: UISlider) {
-        bmiView.weightNumberLabel.text = String(format: "%.0f", sender.value) + "Kg"
+        bmiView.weightNumberLabel.text = String(format: "%.0f", sender.value) + " Kg"
     }
     
     
