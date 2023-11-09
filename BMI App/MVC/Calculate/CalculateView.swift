@@ -1,5 +1,5 @@
 //
-//  BMIView.swift
+//  CalculateView.swift
 //  BMI App
 //
 //  Created by Liz-Mary on 08.11.2023.
@@ -7,7 +7,15 @@
 
 import UIKit
 
-class BMIView: UIView {
+protocol CalculateDelegate: AnyObject {
+    func calcTapped(_ sender: UIButton)
+    func heightSliderChange(_ sender: UISlider)
+    func weightSliderChange(_ sender: UISlider)
+}
+
+class CalculateView: UIView {
+    
+    weak var delegate: CalculateDelegate?
     
     lazy var backgroundView: UIImageView = {
         let element = UIImageView()
@@ -40,6 +48,8 @@ class BMIView: UIView {
         return element
     }()
     
+    let calcButton = UIButton(isBackgroungWhite: false)
+    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         setupView()
@@ -51,12 +61,12 @@ class BMIView: UIView {
     
     func setupView() {
         
-        heightWeightStackView = UIStackView(axis: .horizontal, distribution: .fillProportionally, subview: [heightStackView, weightStackView])
+        heightWeightStackView = UIStackView(axis: .horizontal, distribution: .fillEqually, subview: [heightStackView, weightStackView])
         
-        heightStackView = UIStackView(axis: .horizontal, distribution: .fillProportionally, subview: [heightLabel, heightNumberLabel])
-        weightStackView = UIStackView(axis: .horizontal, distribution: .fillProportionally, subview: [weightLabel, weightNumberLabel])
+        heightStackView = UIStackView(axis: .horizontal, distribution: .fillEqually, subview: [heightLabel, heightNumberLabel])
+        weightStackView = UIStackView(axis: .horizontal, distribution: .fillEqually, subview: [weightLabel, weightNumberLabel])
         
-        mainStackView = UIStackView(axis: .vertical, distribution: .fill, subview: [titleLabel, heightStackView, heightSlider, weightStackView, weightSlider])
+        mainStackView = UIStackView(axis: .vertical, distribution: .fillProportionally, subview: [titleLabel, heightStackView, heightSlider, weightStackView, weightSlider, calcButton])
         
         addSubview(backgroundView)
         addSubview(mainStackView)
@@ -67,5 +77,22 @@ class BMIView: UIView {
         heightNumberLabel.text = "1.5 m"
         weightLabel.text = "Wieght"
         weightNumberLabel.text = "100 kg"
+        
+        calcButton.addTarget(self, action: #selector(calcTapped), for: .touchUpInside)
+        heightSlider.addTarget(self, action: #selector(heightSliderChange), for: .valueChanged)
+        weightSlider.addTarget(self, action: #selector(weightSliderChange), for: .valueChanged)
     }
+    
+    @objc func calcTapped(_ sender: UIButton) {
+        delegate?.calcTapped(sender)
+    }
+    
+    @objc func heightSliderChange(_ sender: UISlider) {
+        delegate?.heightSliderChange(sender)
+    }
+    
+    @objc func weightSliderChange(_ sender: UISlider) {
+        delegate?.weightSliderChange(sender)
+    }
+    
 }
