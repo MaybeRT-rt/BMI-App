@@ -1,5 +1,5 @@
 //
-//  StackViewEztension.swift
+//  StackViewExtension.swift
 //  BMI App
 //
 //  Created by Liz-Mary on 08.11.2023.

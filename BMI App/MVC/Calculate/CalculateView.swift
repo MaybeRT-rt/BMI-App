@@ -1,5 +1,5 @@
 //
-//  BMIView.swift
+//  CalculateView.swift
 //  BMI App
 //
 //  Created by Liz-Mary on 08.11.2023.
@@ -7,13 +7,15 @@
 
 import UIKit
 
-protocol BMIDelegate: AnyObject {
+protocol CalculateDelegate: AnyObject {
     func calcTapped(_ sender: UIButton)
+    func heightSliderChange(_ sender: UISlider)
+    func weightSliderChange(_ sender: UISlider)
 }
 
-class BMIView: UIView {
+class CalculateView: UIView {
     
-    weak var delegate: BMIDelegate?
+    weak var delegate: CalculateDelegate?
     
     lazy var backgroundView: UIImageView = {
         let element = UIImageView()
@@ -46,16 +48,7 @@ class BMIView: UIView {
         return element
     }()
     
-    lazy var calcButton: UIButton = {
-        let element = UIButton()
-        element.tintColor = .white
-        element.backgroundColor = UIColor(red: 0.45, green: 0.45, blue: 0.82, alpha: 1.0)
-        element.layer.cornerRadius = 10
-        element.titleLabel?.font = .systemFont(ofSize: 20)
-        element.addTarget(self, action: #selector(calcTapped), for: .touchUpInside)
-        element.translatesAutoresizingMaskIntoConstraints = false
-        return element
-    }()
+    let calcButton = UIButton(isBackgroungWhite: false)
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -84,10 +77,22 @@ class BMIView: UIView {
         heightNumberLabel.text = "1.5 m"
         weightLabel.text = "Wieght"
         weightNumberLabel.text = "100 kg"
-        calcButton.setTitle("Calculate", for: .normal)
+        
+        calcButton.addTarget(self, action: #selector(calcTapped), for: .touchUpInside)
+        heightSlider.addTarget(self, action: #selector(heightSliderChange), for: .valueChanged)
+        weightSlider.addTarget(self, action: #selector(weightSliderChange), for: .valueChanged)
     }
     
     @objc func calcTapped(_ sender: UIButton) {
         delegate?.calcTapped(sender)
     }
+    
+    @objc func heightSliderChange(_ sender: UISlider) {
+        delegate?.heightSliderChange(sender)
+    }
+    
+    @objc func weightSliderChange(_ sender: UISlider) {
+        delegate?.weightSliderChange(sender)
+    }
+    
 }

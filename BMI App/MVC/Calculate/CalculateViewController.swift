@@ -1,5 +1,5 @@
 //
-//  BMIViewController.swift
+//  CalculateViewController.swift
 //  BMI App
 //
 //  Created by Liz-Mary on 08.11.2023.
@@ -7,9 +7,10 @@
 
 import UIKit
 
-class BMIViewController: UIViewController {
+class CalculateViewController: UIViewController {
     
-    let bmiView = BMIView()
+    let bmiView = CalculateView()
+    let calcBrain = CalcBrain()
     
 //MARK: - Life Cycle
     override func viewDidLoad() {
@@ -45,9 +46,23 @@ class BMIViewController: UIViewController {
     }
 }
 
-extension BMIViewController: BMIDelegate {
+extension CalculateViewController: CalculateDelegate {
+    
     func calcTapped(_ sender: UIButton) {
-        print("tap")
+        let resultVC = ResultViewController()
+        
+        resultVC.modalTransitionStyle = .flipHorizontal
+        resultVC.modalPresentationStyle = .fullScreen
+        
+        present(resultVC, animated: true)
+    }
+    
+    func heightSliderChange(_ sender: UISlider) {
+        bmiView.heightNumberLabel.text = String(format: "%.2f", sender.value) + "m"
+    }
+    
+    func weightSliderChange(_ sender: UISlider) {
+        bmiView.weightNumberLabel.text = String(format: "%.0f", sender.value) + "Kg"
     }
     
     
